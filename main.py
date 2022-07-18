@@ -30,43 +30,43 @@ def is_valid_word(word: str) -> bool:
 
 def play_wordle():
     board = create_board('-', 5, 5)
-    original_word = choose_word(complete_wordle_words()).upper()
+    original_word = 'WATER'
+    # original_word = choose_word(complete_wordle_words()).upper()
     letters_used = set()
     letters_wrong_pos = set()
     n_try = 0
     winner = False
-    while not winner:
-        if n_try == 5:
-            next_game = input('You tried 5 times. '
-                              f'The word you didn\'t guess was {original_word}. Do you want to try another game? (yes/no): ')
-            if next_game == 'yes':
-                play_wordle()
-            else:
-                break
-        else:
-            if letters_wrong_pos:
-                print('You guessed ', letters_wrong_pos, 'letter(s), but the position is wrong')
-            if letters_used:
-                print('You used letters: ', letters_used)
-            pprint(board)
-            user_word = input(f'Choose a 5-letter English word. This is your {n_try+1} try. You have 5 in total: ')
-            while not is_valid_word(user_word):
-                user_word = input("Choose only valid words: ")
-            user_word = user_word.upper()
-            for i, letter in enumerate(user_word):
-                letters_used.add(letter)
-                for j, char in enumerate(original_word):
-                    if letter == char and i == j:
-                        board[n_try][i] = letter
-                        if board[n_try] == list(original_word):
-                            pprint(board)
-                            play_next = input(f'Success, you are a genius. The word was {original_word}. Play with another word? (yes/no): ')
-                            winner = True
-                            if play_next == 'yes':
-                                play_wordle()
-                    if letter == char and i != j:
-                        letters_wrong_pos.add(letter)
-            n_try +=1
+    while not winner and n_try < 5:
+        if letters_wrong_pos:
+            print('You guessed ', letters_wrong_pos, 'letter(s), but the position is wrong')
+        if letters_used:
+            print('You used letters: ', letters_used)
+        pprint(board)
+        user_word = input(f'Choose a 5-letter English word. This is your {n_try+1} try. You have 5 in total: ')
+        while not is_valid_word(user_word):
+            user_word = input("Choose only valid words: ")
+        user_word = user_word.upper()
+        for i, letter in enumerate(user_word):
+            letters_used.add(letter)
+            for j, char in enumerate(original_word):
+                if letter == char and i == j:
+                    board[n_try][i] = letter
+                    if board[n_try] == list(original_word):
+                        pprint(board)
+                        winner = True
+                if letter == char and i != j:
+                    letters_wrong_pos.add(letter)
+        n_try +=1
+
+    if winner:
+        play_next = input(f'Success, you are a genius! The word was {original_word}. Play with another word? (yes/no): ')
+        if play_next == 'yes':
+            play_wordle()
+    else:
+        play_next = input(f'You lost. The word was {original_word}. Play with another word? (yes/no):')
+        if play_next == 'yes':
+            play_wordle()
+
 
 
 
