@@ -6,8 +6,8 @@ from string import ascii_letters
 from generate_words import complete_wordle_words
 
 
-def choose_word(list):
-    word = random.choice(list)
+def choose_word(word_list):
+    word = random.choice(word_list)
     return word
 
 
@@ -30,8 +30,7 @@ def is_valid_word(word: str) -> bool:
 
 def play_wordle():
     board = create_board('-', 5, 5)
-    original_word = 'WATER'
-    # original_word = choose_word(complete_wordle_words()).upper()
+    original_word = choose_word(complete_wordle_words()).upper()
     letters_used = set()
     letters_wrong_pos = set()
     n_try = 0
